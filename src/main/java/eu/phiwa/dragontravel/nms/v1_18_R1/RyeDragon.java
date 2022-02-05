@@ -1,17 +1,25 @@
-package eu.phiwa.dragontravel.nms.v1_11_R1;
+/*
+This is just a copy/paste of NMS for v1_18_R1.
+*/
+
+
+package eu.phiwa.dragontravel.nms.v1_18_R1;
+
 
 import eu.phiwa.dragontravel.core.DragonTravel;
 import eu.phiwa.dragontravel.core.hooks.server.IRyeDragon;
 import eu.phiwa.dragontravel.core.movement.DragonType;
 import eu.phiwa.dragontravel.core.movement.flight.Flight;
-import net.minecraft.server.v1_11_R1.EntityEnderDragon;
-import net.minecraft.server.v1_11_R1.World;
+import net.minecraft.core.BlockPosition;
+import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.boss.enderdragon.EntityEnderDragon;
+import net.minecraft.world.level.World;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_18_R1.util.CraftChatMessage;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 import org.bukkit.util.Vector;
@@ -22,17 +30,22 @@ public class RyeDragon extends EntityEnderDragon implements IRyeDragon {
     private final int travelY = DragonTravel.getInstance().getConfigHandler().getTravelHeight();
 
     private DragonType dragonType = DragonType.STATIONARY;
-    private Location fromLoc;
-    private Location toLoc;
+
     private Player rider;
+
+    // Source location
+    private Location fromLoc;
+
+    // Target location
+    private Location toLoc;
 
     // Flight
     private Flight flight;
     private int currentWayPointIndex;
 
-    //Travel
-    private Location midLocA;
-    private Location midLocB;
+    // Travel
+    private Location midLocA; // Middle location source world
+    private Location midLocB; // Middle location target world
     private boolean finalMove = false;
 
     private double xPerTick;
@@ -43,29 +56,31 @@ public class RyeDragon extends EntityEnderDragon implements IRyeDragon {
         this(loc, ((CraftWorld) loc.getWorld()).getHandle());
     }
 
-    public RyeDragon(Location loc, World notchWorld) { 	
-    	super(notchWorld);
-    	setPosition(loc.getX(), loc.getY(), loc.getZ());
-        yaw = loc.getYaw() + 180;
-        pitch = 0f;
+    public RyeDragon(Location loc, World notchWorld) {
+        super(EntityTypes.v, notchWorld);
+        e(loc.getX(), loc.getY(), loc.getZ());
+        float yaw = loc.getYaw() + 180;
+        float pitch = 0f;
         while (yaw > 360)
             yaw -= 360;
         while (yaw < 0)
             yaw += 360;
-        notchWorld.addEntity(this);
+        notchWorld.b(this);
+        //notchWorld.addEntity(this); IWorldWriter.class
     }
 
     public RyeDragon(World notchWorld) {
-        super(notchWorld);
+        super(EntityTypes.v, notchWorld);
     }
 
-    
+
     /**
      * This method is a natural method of the Enderdragon extended by the RyeDragon.
      * It's fired when the dragon moves and fires the travel-method again to keep the dragon flying.
      */
+    //public void tick() {
     @Override
-    public void A_() {
+    public void k() {
         if (getEntity() != null && rider != null) {
             if (getEntity().getPassenger() != null) {
                 //getEntity().setPassenger(rider); //TODO: Reenable
@@ -94,7 +109,8 @@ public class RyeDragon extends EntityEnderDragon implements IRyeDragon {
                 yaw = (float) Math.PI;
             }
             //back to degrees
-            setYawPitch(-yaw * 180F / (float) Math.PI - 180F, pitch * 180F / (float) Math.PI - 180F);
+            //setYawPitch(-yaw * 180F / (float) Math.PI - 180F, pitch * 180F / (float) Math.PI - 180F);
+            a(-yaw * 180F / (float) Math.PI - 180F, pitch * 180F / (float) Math.PI - 180F);
         }
 
         switch (dragonType) {
@@ -112,30 +128,44 @@ public class RyeDragon extends EntityEnderDragon implements IRyeDragon {
             default:
                 break;
         }
-    }    
-    
+    }
+
+    //1.17-> 1.18 history
+    //locY() = de()
+    //locZ() = di()
+    //locX() = dc()
+    private void setX( double x ) {
+        e( x, de(), di() );
+    }
+    private void setY( double y ) {
+        e( dc(), y, di() );
+    }
+    private void setZ( double z ) {
+        e( dc(), de(), z );
+    }
+
     /**
      * Controls the dragon
      */
     @Override
     public void flight() {
-        if ((int) locX != flight.getWaypoints().get(currentWayPointIndex).getX())
-            if (locX < flight.getWaypoints().get(currentWayPointIndex).getX())
-                locX += xPerTick;
+        if ((int) dc() != flight.getWaypoints().get(currentWayPointIndex).getX())
+            if (dc() < flight.getWaypoints().get(currentWayPointIndex).getX())
+                setX( dc() + xPerTick );
             else
-                locX -= xPerTick;
-        if ((int) locY != flight.getWaypoints().get(currentWayPointIndex).getY())
-            if ((int) locY < flight.getWaypoints().get(currentWayPointIndex).getY())
-                locY += yPerTick;
+                setX( dc() - xPerTick );
+        if ((int) de() != flight.getWaypoints().get(currentWayPointIndex).getY())
+            if ((int) de() < flight.getWaypoints().get(currentWayPointIndex).getY())
+                setY( de() + yPerTick );
             else
-                locY -= yPerTick;
-        if ((int) locZ != flight.getWaypoints().get(currentWayPointIndex).getZ())
-            if (locZ < flight.getWaypoints().get(currentWayPointIndex).getZ())
-                locZ += zPerTick;
+                setY( de() - yPerTick );
+        if ((int) di() != flight.getWaypoints().get(currentWayPointIndex).getZ())
+            if (di() < flight.getWaypoints().get(currentWayPointIndex).getZ())
+                setZ( di() + zPerTick );
             else
-                locZ -= zPerTick;
+                setZ( di() - zPerTick );
 
-        if ((Math.abs((int) locZ - flight.getWaypoints().get(currentWayPointIndex).getZ()) <= 3) && Math.abs((int) locX - flight.getWaypoints().get(currentWayPointIndex).getX()) <= 3 && (Math.abs((int) locY - flight.getWaypoints().get(currentWayPointIndex).getY()) <= 5)) {
+        if ((Math.abs((int) di() - flight.getWaypoints().get(currentWayPointIndex).getZ()) <= 3) && Math.abs((int) dc() - flight.getWaypoints().get(currentWayPointIndex).getX()) <= 3 && (Math.abs((int) de() - flight.getWaypoints().get(currentWayPointIndex).getY()) <= 5)) {
             if (currentWayPointIndex == flight.getWaypoints().size() - 1) {
                 DragonTravel.getInstance().getDragonManager().removeRiderAndDragon(getEntity(), flight.getWaypoints().get(currentWayPointIndex).getAsLocation());
                 return;
@@ -147,7 +177,11 @@ public class RyeDragon extends EntityEnderDragon implements IRyeDragon {
             this.toLoc = flight.getWaypoints().get(currentWayPointIndex).getAsLocation();
 
             if (!flight.getWaypoints().get(currentWayPointIndex).getWorldName().equals(this.getEntity().getWorld().getName())) {
-                this.teleportTo(flight.getWaypoints().get(currentWayPointIndex).getAsLocation(), true);
+                Location loc = flight.getWaypoints().get(currentWayPointIndex).getAsLocation();
+                BlockPosition pos = new BlockPosition( loc.getX(), loc.getY(), loc.getZ() );
+                // [1.15]       this.teleportTo(this.dimension, pos);
+                // [1.16 (1)]   this.teleportTo(this.world.getDimensionManager(), pos);
+                // [1.16 (2)]   this.teleportTo((WorldServer)this.world), pos);
                 this.currentWayPointIndex++;
             }
 
@@ -195,17 +229,20 @@ public class RyeDragon extends EntityEnderDragon implements IRyeDragon {
         if (getEntity().getPassenger() == null)
             return;
 
-        double myX = locX;
-        double myY = locY;
-        double myZ = locZ;
-        double maxDiff = DragonTravel.getInstance().getConfigHandler().getSpeed() + 1;
+        double myX = dc();
+        double myY = de();
+        double myZ = di();
 
         if (finalMove) {
-            if ((int) locY > (int) toLoc.getY() + maxDiff)
+            // Go down to destination
+            if ((int) de() > (int) toLoc.getY())
                 myY -= DragonTravel.getInstance().getConfigHandler().getSpeed();
-            else if ((int) locY < (int) toLoc.getY() - maxDiff)
+                // Go up to destination
+            else if ((int) de() < (int) toLoc.getY())
                 myY += DragonTravel.getInstance().getConfigHandler().getSpeed();
+                // Reached destination
             else {
+                // Interworld travel, dragon reached temporary destination in target world
                 if (!getEntity().getWorld().getName().equals(toLoc.getWorld().getName())) {
                     this.rider = (Player) getEntity().getPassenger();
                     midLocB.getChunk().load();
@@ -228,16 +265,21 @@ public class RyeDragon extends EntityEnderDragon implements IRyeDragon {
                             getEntity().remove();
                         }
                     }, 1L);
-                } else {
+                }
+                // Dragon reached final destination
+                else {
                     DragonTravel.getInstance().getDragonManager().removeRiderAndDragon(getEntity(), true);
                     return;
                 }
             }
-            setPosition(myX, myY, myZ);
+
+            // Move player to new location on tick
+            e(myX, myY, myZ);
+
             return;
         }
 
-        if ((int) locY < travelY)
+        if ((int) de() < travelY)
             myY += DragonTravel.getInstance().getConfigHandler().getSpeed();
 
         if (myX < toLoc.getX())
@@ -250,16 +292,18 @@ public class RyeDragon extends EntityEnderDragon implements IRyeDragon {
         else
             myZ -= zPerTick;
 
-        // For higher travel speeds the accuracy for dismounts needs 
+        // For higher travel speeds the accuracy for dismounts needs
         // to be decreased to prevent dragons from getting stuck
+        double maxDiff = DragonTravel.getInstance().getConfigHandler().getSpeed() + 1;
         if (Math.abs(myZ - (int) toLoc.getZ()) <= maxDiff
-    	 && Math.abs(myX - (int) toLoc.getX()) <= maxDiff) {
+                && Math.abs(myX - (int) toLoc.getX()) <= maxDiff) {
             finalMove = true;
         }
-        setPosition(myX, myY, myZ);        
+        e(myX, myY, myZ);
     }
 
     /**
+     * ⒉setMoveTravel()->/dt travel
      * Sets the x,z move for each tick
      */
     @Override
@@ -286,6 +330,7 @@ public class RyeDragon extends EntityEnderDragon implements IRyeDragon {
     }
 
     /**
+     * ⒈startTravel()->/dt travel
      * Starts a travel to the specified location
      *
      * @param destLoc Location to start a travel to
@@ -296,7 +341,7 @@ public class RyeDragon extends EntityEnderDragon implements IRyeDragon {
         this.rider = (Player) getEntity().getPassenger();
         this.fromLoc = getEntity().getLocation();
         if (interWorld) {
-            this.midLocA = new Location(getEntity().getWorld(), locX + 50 + Math.random() * 100, travelY, locZ + 50 + Math.random() * 100);
+            this.midLocA = new Location(getEntity().getWorld(), dc() + 50 + Math.random() * 100, travelY, di() + 50 + Math.random() * 100);
             int scatter = 80;
             this.midLocB = destLoc.clone().add(scatter, scatter, scatter);
             this.toLoc = destLoc;
@@ -313,30 +358,25 @@ public class RyeDragon extends EntityEnderDragon implements IRyeDragon {
 
     @Override
     public Entity getEntity() {
-        if (bukkitEntity != null)
-            return bukkitEntity;
+        if (getBukkitEntity() != null)
+            return getBukkitEntity();
         return null;
     }
 
-	/*
-    public double x_() {
-		return 3;
-	}
-	 */
+    /*@Override
+    public boolean x() {
+        return super.x();
+    }*/
+
+
+    @Override
+    public boolean d_() {
+        return super.d_();
+    }
 
     public void fixWings() {
-        if (rider != null)
-            ((LivingEntity) getEntity()).damage(2, rider);
-        Bukkit.getScheduler().runTaskLater(DragonTravel.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                if (dragonType.equals(DragonType.STATIONARY)) {
-                    WingFixerTask wfTask = new WingFixerTask();
-                    wfTask.setId(Bukkit.getScheduler().scheduleSyncRepeatingTask(DragonTravel.getInstance(), wfTask, 1L, 21L));
-                }
-            }
-        }, 1L);
-
+        // Artifact of old workaround for wings flipping really fast.
+        // Method stub is required for interface.
     }
 
     public void setDragonType(DragonType dragonType) {
@@ -435,8 +475,7 @@ public class RyeDragon extends EntityEnderDragon implements IRyeDragon {
                     counter++;
                 }
                 for (int z = -1; z <= 1; z++) {
-                                        if (z == 0 && y == 0) continue;
-
+                    if (z == 0 && y == 0) continue;
                     m[counter] = loc.clone().add(0, -y, z).getBlock().getType();
                     md[counter] = loc.clone().add(0, -y, z).getBlock().getState().getData();
                     loc.clone().add(0, -y, z).getBlock().setType(Material.BARRIER);
@@ -472,15 +511,34 @@ public class RyeDragon extends EntityEnderDragon implements IRyeDragon {
         }
     }
 
-    public String getCustomDragonName() {
-        // TODO: Solve name collision (getCustomName <> getCustomDragonName)
-        // Call native method
-        return getCustomName();
+    @Override
+    public void setCustomNameVisible(boolean b) {
+
     }
 
+    // Old (until CB 1_12_R1), now only a compatibility-wrapper for our code
     public void setCustomDragonName(String name) {
-        // TODO: Solve name collision (getCustomName <> getCustomDragonName)
-        // Call native method
-        setCustomName(name);
+        net.minecraft.network.chat.IChatBaseComponent nameInNewType = CraftChatMessage.fromString(name)[0]; // convert from "name"
+
+        // Call new method
+        setCustomName(nameInNewType);
     }
+
+    // New (in CB 1_13_R1)
+    public void setCustomName(net.minecraft.network.chat.IChatBaseComponent name) {
+        super.a(name);
+    }
+
+    // Old (until CB 1_12_R1), now only a compatibility-wrapper for our code
+    public String getCustomDragonName() {
+        // Call new method
+        net.minecraft.network.chat.IChatBaseComponent nameInNewType = getCustomName();
+        return CraftChatMessage.fromComponent(nameInNewType);
+    }
+
+    // New (in CB 1_13_R1)
+    public net.minecraft.network.chat.IChatBaseComponent getCustomName() {
+        return super.Z();
+    }
+
 }

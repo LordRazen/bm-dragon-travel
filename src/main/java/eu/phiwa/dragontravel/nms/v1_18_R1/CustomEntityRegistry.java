@@ -1,41 +1,39 @@
 /*
-This is just a copy/paste of NMS for v1_17_R1.
+This is just a copy/paste of NMS for v1_18_R1.
 */
 
-package eu.phiwa.dragontravel.nms.v1_17_R1;
-
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+package eu.phiwa.dragontravel.nms.v1_18_R1;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
-
-import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.resources.MinecraftKey;
-import net.minecraft.core.RegistryMaterials;
 import net.minecraft.core.RegistryBlocks;
-import net.minecraft.world.entity.boss.enderdragon.*;
-import net.minecraft.world.entity.monster.*;
-import net.minecraft.world.entity.monster.hoglin.*;
-import net.minecraft.world.entity.monster.piglin.*;
-import net.minecraft.world.entity.animal.*;
-import net.minecraft.world.entity.animal.horse.*;
-import net.minecraft.world.entity.animal.axolotl.*;
-import net.minecraft.world.entity.animal.goat.*;
-import net.minecraft.world.entity.decoration.*;
-import net.minecraft.world.entity.ambient.*;
-import net.minecraft.world.entity.vehicle.*;
-import net.minecraft.world.entity.projectile.*;
-import net.minecraft.world.entity.item.*;
-import net.minecraft.world.entity.npc.*;
-import net.minecraft.world.entity.boss.wither.*;
-import net.minecraft.world.entity.player.EntityHuman;
-
+import net.minecraft.core.RegistryMaterials;
+import net.minecraft.resources.MinecraftKey;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ambient.EntityBat;
+import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.animal.goat.Goat;
+import net.minecraft.world.entity.animal.horse.*;
+import net.minecraft.world.entity.boss.enderdragon.EntityEnderCrystal;
+import net.minecraft.world.entity.boss.enderdragon.EntityEnderDragon;
+import net.minecraft.world.entity.boss.wither.EntityWither;
+import net.minecraft.world.entity.decoration.*;
+import net.minecraft.world.entity.item.EntityFallingBlock;
+import net.minecraft.world.entity.item.EntityItem;
+import net.minecraft.world.entity.item.EntityTNTPrimed;
+import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.entity.monster.hoglin.EntityHoglin;
+import net.minecraft.world.entity.monster.piglin.EntityPiglin;
+import net.minecraft.world.entity.monster.piglin.EntityPiglinBrute;
+import net.minecraft.world.entity.npc.EntityVillager;
+import net.minecraft.world.entity.npc.EntityVillagerTrader;
+import net.minecraft.world.entity.player.EntityHuman;
+import net.minecraft.world.entity.projectile.*;
+import net.minecraft.world.entity.vehicle.*;
+
+import java.util.*;
 
 @SuppressWarnings("rawtypes")
 public class CustomEntityRegistry extends RegistryBlocks {
@@ -45,8 +43,8 @@ public class CustomEntityRegistry extends RegistryBlocks {
     private final RegistryMaterials<EntityTypes<?>> wrapped;
 
     public CustomEntityRegistry(RegistryBlocks<EntityTypes<?>> original) {
-        //super(original.a().getNamespace());
-        super(original.a().getNamespace(), null, null);
+        //super(original.a().getNamespace(), null, null);
+        super(original.a().b(), null, null);
         this.wrapped = original;
     }
 
@@ -74,36 +72,40 @@ public class CustomEntityRegistry extends RegistryBlocks {
         */
     }
 
-    @Override
+    //@Override
     public Object fromId(int var0) {
-        return this.wrapped.fromId(var0);
+        //return this.wrapped.fromId(var0);
+        return this.wrapped.a(var0);
     }
 
-    @Override
+    //@Override
     public EntityTypes get(MinecraftKey key) {
         if (entities.containsKey(key)) {
             return entities.get(key);
         }
 
-        return wrapped.get(key);
+        //return wrapped.get(key);
+        return wrapped.a(key);
     }
 
-    @Override
+    //@Override
     public MinecraftKey getKey(Object value) {
         if (entityClasses.containsKey(value)) {
             return entityClasses.get(value);
         }
 
-        return wrapped.getKey((EntityTypes) value);
+        //return wrapped.getKey((EntityTypes) value);
+        return wrapped.b((EntityTypes) value);
     }
 
-    @Override
+    //@Override
     public Optional getOptional(MinecraftKey var0) {
         if (entities.containsKey(var0)) {
             return Optional.of(entities.get(var0));
         }
 
-        return this.wrapped.getOptional(var0);
+        //return this.wrapped.getOptional(var0);
+        return this.wrapped.b(var0);
     }
 
     public RegistryMaterials<EntityTypes<?>> getWrapped() {
@@ -115,9 +117,10 @@ public class CustomEntityRegistry extends RegistryBlocks {
         return (Iterator) wrapped.iterator();
     }
 
-    @Override
+    //@Override
     public Set<Object> keySet() {
-        return (Set) wrapped.keySet();
+        //return (Set) wrapped.keySet();
+        return (Set) wrapped.d();
     }
 
     public void put(int entityId, MinecraftKey key, EntityTypes entityClass) {
@@ -242,6 +245,6 @@ public class CustomEntityRegistry extends RegistryBlocks {
         minecraftClassMap.put(EntityTypes.bg, EntityZombieVillager.class);
         minecraftClassMap.put(EntityTypes.bh, EntityPigZombie.class);
         minecraftClassMap.put(EntityTypes.bi, EntityHuman.class);
-        minecraftClassMap.put(EntityTypes.b, EntityFishingHook.class);
+        minecraftClassMap.put(EntityTypes.bj, EntityFishingHook.class);
     }
 }
