@@ -3,7 +3,7 @@ This is just a copy/paste of NMS for v1_18_R1.
 */
 
 
-package eu.phiwa.dragontravel.nms.v1_18_R1;
+package eu.phiwa.dragontravel.nms.v1_19_R1;
 
 import eu.phiwa.dragontravel.core.DragonTravel;
 import eu.phiwa.dragontravel.core.hooks.server.IEntityRegister;
