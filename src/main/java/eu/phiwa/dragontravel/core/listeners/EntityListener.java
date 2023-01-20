@@ -2,8 +2,8 @@ package eu.phiwa.dragontravel.core.listeners;
 
 import eu.phiwa.dragontravel.core.DragonTravel;
 import eu.phiwa.dragontravel.core.hooks.server.IRyeDragon;
-import eu.phiwa.dragontravel.nms.v1_8_R3.RyeDragon;
 
+import eu.phiwa.dragontravel.nms.v1_19_R2.RyeDragon;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

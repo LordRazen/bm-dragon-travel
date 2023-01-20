@@ -1,29 +1,21 @@
-/*
-This is just a copy/paste of NMS for v1_17_R1.
-*/
-
-
-package eu.phiwa.dragontravel.nms.v1_17_R1;
+package eu.phiwa.dragontravel.nms.v1_19_R2;
 
 import eu.phiwa.dragontravel.core.DragonTravel;
 import eu.phiwa.dragontravel.core.hooks.server.IEntityRegister;
+import net.minecraft.resources.MinecraftKey;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityTypes;
+import org.bukkit.Bukkit;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
-
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.resources.MinecraftKey;
-
 public class EntityRegister implements IEntityRegister {
     private static CustomEntityRegistry ENTITY_REGISTRY;
-    private static final Map<Class<?>, EntityTypes<?>> DRAGONTRAVEL_ENTITY_TYPES = new HashMap<Class<?>, EntityTypes<?>>();
+    private static final Map<Class<?>, EntityTypes<?>> DRAGONTRAVEL_ENTITY_TYPES = new HashMap<>();
 
     public void registerEntityClass(Class<?> clazz) {
-        if (ENTITY_REGISTRY == null)
-            return;
+        if (ENTITY_REGISTRY == null) return;
 
         Class<?> search = clazz;
         while ((search = search.getSuperclass()) != null && Entity.class.isAssignableFrom(search)) {
@@ -36,7 +28,7 @@ public class EntityRegister implements IEntityRegister {
             ENTITY_REGISTRY.put(code, key, type);
             return;
         }
-        throw new IllegalArgumentException("unable to find valid entity superclass for class " + clazz.toString());
+        throw new IllegalArgumentException("unable to find valid entity superclass for class " + clazz);
     }
 
     @Override
