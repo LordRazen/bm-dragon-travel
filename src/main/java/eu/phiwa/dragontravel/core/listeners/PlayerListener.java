@@ -11,7 +11,6 @@ import eu.phiwa.dragontravel.core.movement.DragonType;
 import eu.phiwa.dragontravel.nms.CompatibilityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;

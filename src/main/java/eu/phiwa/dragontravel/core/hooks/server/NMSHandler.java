@@ -1,9 +1,8 @@
 package eu.phiwa.dragontravel.core.hooks.server;
 
+import eu.phiwa.dragontravel.core.DragonTravel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-
-import eu.phiwa.dragontravel.core.DragonTravel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;

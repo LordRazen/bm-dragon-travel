@@ -9,7 +9,6 @@ import eu.phiwa.dragontravel.core.movement.DragonType;
 import eu.phiwa.dragontravel.core.movement.flight.FlightEngine;
 import eu.phiwa.dragontravel.core.movement.stationary.StationaryDragon;
 import eu.phiwa.dragontravel.core.movement.travel.TravelEngine;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -18,7 +17,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;

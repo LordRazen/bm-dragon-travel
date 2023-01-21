@@ -1,9 +1,4 @@
-/*
-This is just a copy/paste of NMS for v1_18_R1.
-*/
-
-
-package eu.phiwa.dragontravel.nms.v1_19_R1;
+package eu.phiwa.dragontravel.nms.v1_19_R2;
 
 import eu.phiwa.dragontravel.core.DragonTravel;
 import eu.phiwa.dragontravel.core.hooks.server.IEntityRegister;
@@ -17,11 +12,10 @@ import java.util.Map;
 
 public class EntityRegister implements IEntityRegister {
     private static CustomEntityRegistry ENTITY_REGISTRY;
-    private static final Map<Class<?>, EntityTypes<?>> DRAGONTRAVEL_ENTITY_TYPES = new HashMap<Class<?>, EntityTypes<?>>();
+    private static final Map<Class<?>, EntityTypes<?>> DRAGONTRAVEL_ENTITY_TYPES = new HashMap<>();
 
     public void registerEntityClass(Class<?> clazz) {
-        if (ENTITY_REGISTRY == null)
-            return;
+        if (ENTITY_REGISTRY == null) return;
 
         Class<?> search = clazz;
         while ((search = search.getSuperclass()) != null && Entity.class.isAssignableFrom(search)) {

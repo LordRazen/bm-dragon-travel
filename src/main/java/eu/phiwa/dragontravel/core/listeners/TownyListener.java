@@ -1,10 +1,10 @@
 package eu.phiwa.dragontravel.core.listeners;
 
+import com.palmergames.bukkit.towny.event.MobRemovalEvent;
+import eu.phiwa.dragontravel.core.DragonTravel;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import com.palmergames.bukkit.towny.event.MobRemovalEvent;
-import eu.phiwa.dragontravel.core.DragonTravel;
 
 public class TownyListener implements Listener
 {
