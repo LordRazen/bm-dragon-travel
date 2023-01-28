@@ -27,8 +27,6 @@ public interface IRyeDragon {
 
     void setCustomDragonName(String name);
 
-    void x(Entity e);
-
     void fixWings();
 
     void setCustomNameVisible(boolean b);
