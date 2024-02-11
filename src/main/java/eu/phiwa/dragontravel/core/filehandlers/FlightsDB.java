@@ -4,7 +4,6 @@ import eu.phiwa.dragontravel.core.DragonTravel;
 import eu.phiwa.dragontravel.core.hooks.permissions.PermissionsHandler;
 import eu.phiwa.dragontravel.core.movement.flight.Flight;
 import eu.phiwa.dragontravel.core.movement.flight.Waypoint;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

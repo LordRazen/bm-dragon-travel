@@ -1,9 +1,9 @@
 package eu.phiwa.dragontravel.nms;
 
+import org.bukkit.Material;
+
 import java.util.Arrays;
 import java.util.List;
-
-import org.bukkit.Material;
 
 public class CompatibilityUtils {
 

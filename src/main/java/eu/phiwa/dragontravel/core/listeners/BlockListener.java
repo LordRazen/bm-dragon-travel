@@ -4,7 +4,6 @@ import eu.phiwa.dragontravel.core.DragonTravel;
 import eu.phiwa.dragontravel.nms.CompatibilityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
